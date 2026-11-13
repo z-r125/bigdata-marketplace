@@ -1,0 +1,7 @@
+data/
+.venv/
+__pycache__/
+*.pyc
+bench/results/raw/
+.env
+spark/.ivy2/
