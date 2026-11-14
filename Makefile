@@ -23,7 +23,7 @@ load:
 > docker exec app python loader/load.py
 
 bench:
-> docker exec app python bench/run_all.py
+> docker exec -u $$(id -u):$$(id -g) app python -m bench.run_all $(ARGS)
 
 spark:
 > docker exec spark-master /opt/spark/bin/spark-submit --master spark://spark-master:7077 --packages $(SPARK_PKG) --conf spark.jars.ivy=/tmp/.ivy2 --conf spark.cassandra.connection.host=cass1,cass2,cass3 /opt/app/jobs/$(JOB).py
