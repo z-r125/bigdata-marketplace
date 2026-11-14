@@ -1,0 +1,21 @@
+antecedent,consequent,confidence,lift,support
+Chemise Defacto marron + Bottines Geox rouge,Sandales Geox noir,1.0,154.6978,0.0062
+Sandales Geox noir + Bottines Geox rouge,Chemise Defacto marron,1.0,152.5035,0.0062
+PC portable MSI Ryzen 5 8Go/2048Go,TV LG 32 pouces Full HD,0.9609,150.8251,0.0057
+TV LG 32 pouces Full HD,PC portable MSI Ryzen 5 8Go/2048Go,0.8978,150.8251,0.0057
+Sandales Geox noir + Chemise Defacto marron,Bottines Geox rouge,1.0,148.2966,0.0062
+Sandales Geox noir,Chemise Defacto marron,0.964,147.0178,0.0062
+Chemise Defacto marron,Sandales Geox noir,0.9504,147.0178,0.0062
+PC portable Dell Ryzen 5 16Go/512Go + Smartphone Huawei 512Go bleu,Smartphone Samsung 512Go noir,1.0,146.2789,0.0063
+Smartphone Oppo 256Go bleu + TV LG 50 pouces 4K UHD,Smartphone Huawei 256Go vert,1.0,145.2905,0.0067
+Chaussures de sport Skechers gris + Bottines Skechers bleu,Robe Zara beige,1.0,144.3154,0.0066
+Robe Zara beige + Bottines Skechers bleu,Chaussures de sport Skechers gris,1.0,144.3154,0.0066
+Smartphone Huawei 256Go vert + TV LG 50 pouces 4K UHD,Smartphone Oppo 256Go bleu,1.0,143.3533,0.0067
+Sandales Geox noir,Bottines Geox rouge,0.964,142.9621,0.0062
+Bottines Geox rouge,Sandales Geox noir,0.9241,142.9621,0.0062
+Smartphone Oppo 128Go noir,Enceinte Samsung Bluetooth,0.9595,141.31,0.0066
+Enceinte Samsung Bluetooth,Smartphone Oppo 128Go noir,0.9726,141.31,0.0066
+Chemise Defacto marron,Bottines Geox rouge,0.9504,140.9343,0.0062
+Bottines Geox rouge,Chemise Defacto marron,0.9241,140.9343,0.0062
+Mocassins Nike marron + Chaussures de sport Nike bleu,Mocassins Nike rouge,1.0,140.5425,0.0068
+Baskets Adidas marron + Jean H&M marron,Sandales Geox blanc,1.0,140.5425,0.0069

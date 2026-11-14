@@ -138,3 +138,17 @@ WORKLOAD.update({
     "A23_NOIDX": Spec(a23_computers, NO_INDEX, "PC RAM >= 16 Go et < 8000 MAD (scan + ALLOW FILTERING)"),
     "A24_NOIDX": Spec(a24_inactive_customers, NO_INDEX, "Clients inactifs 90 j (scan + ALLOW FILTERING)"),
 })
+
+# ------------------------------------------------------------------ A16-A20, A22, A25 (natives)
+from app.analytics import queries as aq
+
+WORKLOAD.update({
+    "A16": Spec(aq.a16_revenue_per_day, NO_ARGS, "CA par jour sur 30 jours (GROUP BY day)", supports_cl=True),
+    "A17": Spec(aq.a17_top_products, NO_ARGS, "Top 10 produits vendus (GROUP BY product_id)", supports_cl=True),
+    "A18": Spec(aq.a18_product_rating, lambda c: ((pick(c, "products"),), {}),
+                "Note moyenne et nombre d'avis d'un produit", supports_cl=True),
+    "A19": Spec(aq.a19_revenue_by_category, NO_ARGS, "CA par catégorie (8 partitions)", supports_cl=True),
+    "A20": Spec(aq.a20_avg_basket_by_city, NO_ARGS, "Panier moyen par ville (12 partitions)", supports_cl=True),
+    "A22": Spec(aq.a22_orders_by_payment, NO_ARGS, "Commandes par mode de paiement (12 mois)", supports_cl=True),
+    "A25": Spec(aq.a25_cancellation_rate, NO_ARGS, "Taux d'annulation par catégorie", supports_cl=True),
+})

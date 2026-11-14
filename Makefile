@@ -59,3 +59,9 @@ index-exp:
 > docker exec -i cass1 cqlsh < cql/03_indexes.cql
 > sleep 30
 > docker exec -u $$(id -u):$$(id -g) app python -m bench.report_index
+
+analytics:
+> docker exec -u $$(id -u):$$(id -g) app python -m app.analytics.export
+
+spark-all:
+> for j in s26_rfm s27_fpgrowth s28_funnel s29_cohorts s30_growth compare_native; do $(MAKE) spark JOB=$$j || exit 1; done

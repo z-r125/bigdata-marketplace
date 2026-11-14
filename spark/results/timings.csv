@@ -1,0 +1,9 @@
+timestamp,query,description,variant,cl,nodes_up,runs,ok,errors,median_ms,p95_ms,min_ms,max_ms,mean_ms,last_error,note
+2026-11-14T15:19:43,S26,Analyse RFM et segmentation,spark,LOCAL_ONE (connecteur),,1,1,0,39804.01,39804.01,39804.01,39804.01,39804.01,,1 execution; demarrage session 3.6s
+2026-11-14T15:21:16,S27,FP-Growth (achats conjoints),spark,LOCAL_ONE (connecteur),,1,1,0,80718.91,80718.91,80718.91,80718.91,80718.91,,1 execution; demarrage session 4.0s
+2026-11-14T15:22:03,S28,Entonnoir vues/panier/achat (3 sources),spark,LOCAL_ONE (connecteur),,1,1,0,36928.17,36928.17,36928.17,36928.17,36928.17,,1 execution; demarrage session 3.4s
+2026-11-14T15:22:44,S29,Valeur client par cohorte d'inscription,spark,LOCAL_ONE (connecteur),,1,1,0,31435.93,31435.93,31435.93,31435.93,31435.93,,1 execution; demarrage session 3.3s
+2026-11-14T15:23:22,S30,Croissance mensuelle par catégorie (lag),spark,LOCAL_ONE (connecteur),,1,1,0,30125.41,30125.41,30125.41,30125.41,30125.41,,1 execution; demarrage session 3.0s
+2026-11-14T15:24:04,A16,CA par jour sur 30 jours (Spark),spark,LOCAL_ONE (connecteur),,5,5,0,1187.08,8319.25,1062.09,8319.25,2796.97,,demarrage session 3.1s
+2026-11-14T15:24:16,A17,Top 10 produits vendus (Spark),spark,LOCAL_ONE (connecteur),,5,5,0,1893.35,2112.07,1733.65,2112.07,1887.48,,demarrage session 3.1s
+2026-11-14T15:24:26,A19,CA par catégorie (Spark),spark,LOCAL_ONE (connecteur),,5,5,0,1564.7,1697.96,1378.01,1697.96,1574.39,,demarrage session 3.1s
