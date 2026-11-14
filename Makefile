@@ -48,3 +48,14 @@ clean:
 > docker compose down -v
 tx:
 > docker exec app python -m app.transactional.demo
+
+index-exp:
+> rm -f bench/results/index.csv
+> $(MAKE) bench ARGS="--only A21,A23,A24 --variant sai --runs 20 --out bench/results/index.csv"
+> docker exec cass1 cqlsh -k marketplace -e "DROP INDEX IF EXISTS products_stock_sai; DROP INDEX IF EXISTS products_category_sai; DROP INDEX IF EXISTS products_ram_sai; DROP INDEX IF EXISTS products_price_sai; DROP INDEX IF EXISTS customers_last_order_sai;"
+> sleep 10
+> -docker exec cass1 cqlsh -k marketplace -e "SELECT name FROM products WHERE stock < 10 LIMIT 1;"
+> $(MAKE) bench ARGS="--only A21_NOIDX,A23_NOIDX,A24_NOIDX --variant sans_index --runs 20 --out bench/results/index.csv"
+> docker exec -i cass1 cqlsh < cql/03_indexes.cql
+> sleep 30
+> docker exec -u $$(id -u):$$(id -g) app python -m bench.report_index

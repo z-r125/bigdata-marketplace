@@ -1,0 +1,7 @@
+timestamp,query,description,variant,cl,nodes_up,runs,ok,errors,median_ms,p95_ms,min_ms,max_ms,mean_ms,last_error,note
+2026-11-14T14:21:04,A21,Stock < 10 (index SAI),sai,LOCAL_QUORUM (défaut),3,20,20,0,56.93,103.09,40.54,120.6,63.9,,
+2026-11-14T14:21:05,A23,PC RAM >= 16 Go et < 8000 MAD (3 index SAI),sai,LOCAL_QUORUM (défaut),3,20,20,0,48.29,88.28,34.18,130.78,56.14,,
+2026-11-14T14:21:09,A24,Clients inactifs depuis 90 j (index SAI),sai,LOCAL_QUORUM (défaut),3,20,20,0,172.4,274.96,101.82,284.64,180.38,,
+2026-11-14T14:21:28,A21_NOIDX,Stock < 10 (scan + ALLOW FILTERING),sans_index,LOCAL_QUORUM (défaut),3,20,20,0,55.08,83.53,44.3,87.61,57.11,,
+2026-11-14T14:21:29,A23_NOIDX,PC RAM >= 16 Go et < 8000 MAD (scan + ALLOW FILTERING),sans_index,LOCAL_QUORUM (défaut),3,20,20,0,45.79,54.9,41.64,57.31,47.12,,
+2026-11-14T14:21:31,A24_NOIDX,Clients inactifs 90 j (scan + ALLOW FILTERING),sans_index,LOCAL_QUORUM (défaut),3,20,20,0,89.47,153.37,81.68,198.88,98.87,,

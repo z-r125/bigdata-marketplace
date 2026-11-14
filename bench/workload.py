@@ -18,6 +18,7 @@ from uuid import uuid4
 from app.db import execute
 from app.transactional import queries as q
 from app.transactional.demo import fake_products
+from app.analytics.index_queries import a21_low_stock, a23_computers, a24_inactive_customers
 
 CITIES = ["Casablanca", "Rabat", "Marrakech", "Fès", "Tanger", "Agadir",
           "Meknès", "Oujda", "Kénitra", "Tétouan", "El Jadida", "Safi"]
@@ -38,7 +39,8 @@ class Spec:
 
 # ------------------------------------------------------------------ contexte (échantillons réels)
 def build_context(seed: int = 7) -> dict:
-    products = [r.product_id for r in execute("SELECT product_id FROM products WHERE stock > 100 LIMIT 100")]
+    products = [r.product_id for r in execute("SELECT product_id, stock FROM products LIMIT 1000")
+                if r.stock > 100][:100]
     customers = list(dict.fromkeys(r.customer_id for r in
                                    execute("SELECT customer_id FROM orders_by_customer LIMIT 500")))
     reviews = [r.review_id for r in execute("SELECT review_id FROM review_helpful LIMIT 100")]
@@ -120,6 +122,19 @@ WORKLOAD: dict[str, Spec] = {
     "T14": Spec(q.t14_delete_retired_products, args_t14, "Supprimer 5 000 produits retirés d'un vendeur",
                 runs=3, warmup=0),
     "T15": Spec(q.t15_pending_orders_in_city, lambda c: ((c["rnd"].choice(CITIES),), {}),
-                "Commandes PENDING d'une ville", supports_cl=True),
+                "Commandes PENDING d'une ville", supports_cl=True), 
     # --- M3 : ajouter ici A16 à A25 (natif) et les variantes Spark ---
-}
+    }
+    # ------------------------------------------------------------------ A21 / A23 / A24 (index SAI)
+
+NO_ARGS = lambda c: ((), {})
+NO_INDEX = lambda c: ((), {"allow_filtering": True})
+
+WORKLOAD.update({
+    "A21": Spec(a21_low_stock, NO_ARGS, "Stock < 10 (index SAI)", supports_cl=True),
+    "A23": Spec(a23_computers, NO_ARGS, "PC RAM >= 16 Go et < 8000 MAD (3 index SAI)", supports_cl=True),
+    "A24": Spec(a24_inactive_customers, NO_ARGS, "Clients inactifs depuis 90 j (index SAI)", supports_cl=True),
+    "A21_NOIDX": Spec(a21_low_stock, NO_INDEX, "Stock < 10 (scan + ALLOW FILTERING)"),
+    "A23_NOIDX": Spec(a23_computers, NO_INDEX, "PC RAM >= 16 Go et < 8000 MAD (scan + ALLOW FILTERING)"),
+    "A24_NOIDX": Spec(a24_inactive_customers, NO_INDEX, "Clients inactifs 90 j (scan + ALLOW FILTERING)"),
+})
