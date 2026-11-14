@@ -2,6 +2,7 @@
 SHELL := /bin/bash
 SPARK_PKG := com.datastax.spark:spark-cassandra-connector_2.12:3.5.1
 JOB ?= 00_smoke
+DEFAULT_CL ?= LOCAL_QUORUM
 
 .PHONY: up status ps schema gen load bench spark kill3 heal3 dash logs down clean
 
@@ -23,7 +24,7 @@ load:
 > docker exec app python loader/load.py
 
 bench:
-> docker exec -u $$(id -u):$$(id -g) app python -m bench.run_all $(ARGS)
+> docker exec -u $$(id -u):$$(id -g) -e CASS_DEFAULT_CL=$(DEFAULT_CL) app python -m bench.run_all $(ARGS)
 
 spark:
 > docker exec spark-master /opt/spark/bin/spark-submit --master spark://spark-master:7077 --packages $(SPARK_PKG) --conf spark.jars.ivy=/tmp/.ivy2 --conf spark.cassandra.connection.host=cass1,cass2,cass3 /opt/app/jobs/$(JOB).py

@@ -26,7 +26,10 @@ CL = {
     "ALL": ConsistencyLevel.ALL,
     "SERIAL": ConsistencyLevel.SERIAL,
 }
-DEFAULT_CL = "LOCAL_QUORUM"
+
+DEFAULT_CL = (os.getenv("CASS_DEFAULT_CL") or "LOCAL_QUORUM").upper()
+if DEFAULT_CL not in ("ONE", "QUORUM", "LOCAL_QUORUM", "ALL"):
+    raise ValueError(f"CASS_DEFAULT_CL invalide : {DEFAULT_CL!r}")
 
 _cluster = None
 _session = None
