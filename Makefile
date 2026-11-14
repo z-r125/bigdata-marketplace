@@ -18,8 +18,7 @@ schema:
 > for f in cql/*.cql; do echo ">> $$f"; docker exec -i cass1 cqlsh < $$f || exit 1; done
 
 gen:
-> docker exec app python generator/generate.py --seed 42 --ref-date 2026-11-30
-
+> docker exec -u $$(id -u):$$(id -g) app python generator/generate.py --seed 42 --ref-date 2026-11-30
 load:
 > docker exec app python loader/load.py
 
