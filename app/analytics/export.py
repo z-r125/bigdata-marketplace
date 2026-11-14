@@ -46,7 +46,7 @@ def main():
         show(title, header, rows)
         write(fname, header, rows)
 
-    pid = execute("SELECT product_id FROM review_helpful LIMIT 1").one()
+   
     prod = execute("SELECT product_id FROM reviews_by_product LIMIT 1").one().product_id
     print(f"\n=== A18 Note d'un produit ({prod}) ===\n{aq.a18_product_rating(prod)}")
     print(f"\nA21 produits stock < 10 : {len(iq.a21_low_stock())}")
