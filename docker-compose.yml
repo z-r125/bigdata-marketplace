@@ -1,0 +1,95 @@
+name: marketplace
+
+x-cass-env: &cass-env
+  CASSANDRA_CLUSTER_NAME: marketplace
+  CASSANDRA_DC: dc1
+  CASSANDRA_RACK: rack1
+  CASSANDRA_ENDPOINT_SNITCH: GossipingPropertyFileSnitch
+  CASSANDRA_SEEDS: cass1
+  MAX_HEAP_SIZE: ${CASS_HEAP:-1G}
+  HEAP_NEWSIZE: ${CASS_NEWHEAP:-256M}
+
+x-cass-health: &cass-health
+  test: ["CMD-SHELL", "cqlsh -e 'DESCRIBE KEYSPACES' > /dev/null 2>&1"]
+  interval: 15s
+  timeout: 10s
+  retries: 40
+  start_period: 60s
+
+x-spark: &spark
+  build:
+    context: .
+    dockerfile: docker/spark/Dockerfile
+  image: marketplace-spark:3.5.3
+  volumes:
+    - ./spark:/opt/app
+
+services:
+  cass1:
+    image: cassandra:${CASS_VERSION:-5.0}
+    container_name: cass1
+    hostname: cass1
+    environment: *cass-env
+    volumes: [cass1:/var/lib/cassandra]
+    healthcheck: *cass-health
+
+  cass2:
+    image: cassandra:${CASS_VERSION:-5.0}
+    container_name: cass2
+    hostname: cass2
+    environment: *cass-env
+    volumes: [cass2:/var/lib/cassandra]
+    healthcheck: *cass-health
+    depends_on:
+      cass1: { condition: service_healthy }
+
+  cass3:
+    image: cassandra:${CASS_VERSION:-5.0}
+    container_name: cass3
+    hostname: cass3
+    environment: *cass-env
+    volumes: [cass3:/var/lib/cassandra]
+    healthcheck: *cass-health
+    depends_on:
+      cass2: { condition: service_healthy }
+
+  spark-master:
+    <<: *spark
+    container_name: spark-master
+    hostname: spark-master
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.master.Master
+    ports: ["8080:8080", "4040:4040"]
+
+  spark-worker-1:
+    <<: *spark
+    container_name: spark-worker-1
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    environment:
+      SPARK_WORKER_CORES: "1"
+      SPARK_WORKER_MEMORY: ${SPARK_WORKER_MEMORY:-1g}
+    depends_on: [spark-master]
+
+  spark-worker-2:
+    <<: *spark
+    container_name: spark-worker-2
+    command: /opt/spark/bin/spark-class org.apache.spark.deploy.worker.Worker spark://spark-master:7077
+    environment:
+      SPARK_WORKER_CORES: "1"
+      SPARK_WORKER_MEMORY: ${SPARK_WORKER_MEMORY:-1g}
+    depends_on: [spark-master]
+
+  app:
+    build:
+      context: .
+      dockerfile: app/Dockerfile
+    container_name: app
+    working_dir: /workspace
+    volumes: [".:/workspace"]
+    ports: ["8501:8501"]
+    depends_on:
+      cass3: { condition: service_healthy }
+
+volumes:
+  cass1: {}
+  cass2: {}
+  cass3: {}
